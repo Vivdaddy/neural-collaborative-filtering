@@ -110,10 +110,10 @@ class SampleGenerator(object):
                 ratings.append(float(0))  # negative samples get 0 rating
         if self.classification is True:
             print("In data classificaiton")
-            ratings = torch.LongTensor(torch.nn.functional.one_hot(torch.as_tensor(ratings, dtype=torch.int64), num_classes=6))
+            # ratings = torch.LongTensor(torch.nn.functional.one_hot(torch.as_tensor(ratings, dtype=torch.int64), num_classes=6))
         dataset = UserItemRatingDataset(user_tensor=torch.LongTensor(users),
                                         item_tensor=torch.LongTensor(items),
-                                        target_tensor=ratings)
+                                        target_tensor=torch.LongTensor(ratings))
         return DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     @property
