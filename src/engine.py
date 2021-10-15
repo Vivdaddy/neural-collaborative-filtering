@@ -36,8 +36,8 @@ class Engine(object):
         ratings_pred = self.model(users, items)
         # print("predicted Size in batch is ", ratings_pred.size())
         # print("actual size of labels is ", ratings.size())
-        # print("ratings pred is ", ratings_pred)
-        # print("ratings is", ratings)
+        print("ratings pred is ", ratings_pred)
+        print("ratings is", ratings)
         loss = self.crit(ratings_pred, ratings)
         loss.backward()
         self.opt.step()
@@ -79,8 +79,8 @@ class Engine(object):
                 negative_items = negative_items.cpu()
                 negative_scores = negative_scores.cpu()
             if self.classification is not False:
-                # test_scores = torch.argmax(test_scores, dim=1)
-                # negative_scores = torch.argmax(negative_scores, dim=1)
+                test_scores = torch.argmax(test_scores, dim=1)
+                negative_scores = torch.argmax(negative_scores, dim=1)
                 print("test scores ", test_scores)
             self._metron.subjects = [test_users.data.view(-1).tolist(),
                                  test_items.data.view(-1).tolist(),
