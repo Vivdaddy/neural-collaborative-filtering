@@ -13,15 +13,19 @@ class GMF(torch.nn.Module):
         self.embedding_user = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim)
         self.embedding_item = torch.nn.Embedding(num_embeddings=self.num_items, embedding_dim=self.latent_dim)
 
-        self.affine_output = torch.nn.Linear(in_features=self.latent_dim, out_features=1)
-        self.logistic = torch.nn.Sigmoid()
+        if config['classification'] is True:
+            self.last_layer = torch.nn.Linear(in_features=config['layers'][-1] + config['latent_dim_mf'], out_features=config['num_classes'])
+            self.activation = torch.nn.Softmax()
+        else:
+            self.last_layer = torch.nn.Linear(in_features=config['layers'][-1] + config['latent_dim_mf'], out_features=1)
+            self.activation = torch.nn.Sigmoid()
 
     def forward(self, user_indices, item_indices):
         user_embedding = self.embedding_user(user_indices)
         item_embedding = self.embedding_item(item_indices)
         element_product = torch.mul(user_embedding, item_embedding)
-        logits = self.affine_output(element_product)
-        rating = self.logistic(logits)
+        logits = self.last_layer(element_product)
+        rating = self.activation(logits)
         return rating
 
     def init_weight(self):

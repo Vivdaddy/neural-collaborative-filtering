@@ -1,6 +1,7 @@
 import torch
 import random
 import pandas as pd
+import numpy as np
 from copy import deepcopy
 from torch.utils.data import DataLoader, Dataset
 
@@ -29,7 +30,7 @@ class UserItemRatingDataset(Dataset):
 class SampleGenerator(object):
     """Construct dataset for NCF"""
 
-    def __init__(self, ratings):
+    def __init__(self, ratings, classification=True):
         """
         args:
             ratings: pd.DataFrame, which contains 4 columns = ['userId', 'itemId', 'rating', 'timestamp']
@@ -41,7 +42,10 @@ class SampleGenerator(object):
         self.ratings = ratings
         # explicit feedback using _normalize and implicit using _binarize
         # self.preprocess_ratings = self._normalize(ratings)
-        self.preprocess_ratings = self._binarize(ratings)
+        if classification:
+            self.preprocess_ratings = self._multirize(ratings)
+        else:
+            self.preprocess_ratings = self._binarize(ratings)
         self.user_pool = set(self.ratings['userId'].unique())
         self.item_pool = set(self.ratings['itemId'].unique())
         # create negative item samples for NCF learning
@@ -61,6 +65,11 @@ class SampleGenerator(object):
         ratings['rating'][ratings['rating'] > 0] = 1.0
         return ratings
 
+    def _multirize(self, ratings):
+        """Multirize into 1, 2, 3, 4, 5 """
+        ratings = deepcopy(ratings)
+        return ratings
+
     def _split_loo(self, ratings):
         """leave one out train/test split """
         ratings['rank_latest'] = ratings.groupby(['userId'])['timestamp'].rank(method='first', ascending=False)
@@ -68,6 +77,14 @@ class SampleGenerator(object):
         train = ratings[ratings['rank_latest'] > 1]
         assert train['userId'].nunique() == test['userId'].nunique()
         return train[['userId', 'itemId', 'rating']], test[['userId', 'itemId', 'rating']]
+
+    def _split_percent(self, ratings, train_fraction):
+        """Random Train fraction of interactions will be train, rest will be test """
+        # shuffle dataset
+        ratings = ratings.sample(frac=1.).reset_index(drop=True)
+        pivot = ratings.shape[0]
+        ratings['rank_latest'] = ratings.groupby(['userId'])['timestamp'].rank(method='first', ascending=False)
+        return
 
     def _sample_negative(self, ratings):
         """return all negative items & 100 sampled negative items"""

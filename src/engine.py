@@ -21,7 +21,10 @@ class Engine(object):
         # explicit feedback
         # self.crit = torch.nn.MSELoss()
         # implicit feedback
-        self.crit = torch.nn.BCELoss()
+        if self.config['classification'] is True:
+            self.crit = torch.nn.CrossEntropyLoss()
+        else:
+            self.crit = torch.nn.BCELoss()
 
     def train_single_batch(self, users, items, ratings):
         assert hasattr(self, 'model'), 'Please specify the exact model !'
@@ -62,7 +65,7 @@ class Engine(object):
                 negative_items = negative_items.cuda()
             test_scores = self.model(test_users, test_items)
             negative_scores = self.model(negative_users, negative_items)
-            if self.config['use_cuda'] is True:
+            if self.config['use_cuda'] is False:
                 test_users = test_users.cpu()
                 test_items = test_items.cpu()
                 test_scores = test_scores.cpu()
