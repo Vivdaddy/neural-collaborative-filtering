@@ -34,7 +34,7 @@ class Engine(object):
         print("actual size of labels is ", ratings.size())
         print("ratings pred is ", ratings_pred)
         print("ratings is", ratings)
-        loss = self.crit(ratings_pred, ratings)
+        loss = self.crit(ratings_pred, ratings.squeeze(1))
         loss.backward()
         self.opt.step()
         loss = loss.item()
