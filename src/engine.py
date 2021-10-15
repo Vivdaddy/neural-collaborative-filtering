@@ -21,12 +21,8 @@ class Engine(object):
         # explicit feedback
         # self.crit = torch.nn.MSELoss()
         # implicit feedback
-        self.classification  = self.config['classification']
-        if self.config['classification'] is True:
-            print("classification engine")
-            self.crit = torch.nn.CrossEntropyLoss()
-        else:
-            self.crit = torch.nn.BCELoss()
+        self.crit = torch.nn.CrossEntropyLoss()
+        # self.crit = torch.nn.BCELoss()
 
     def train_single_batch(self, users, items, ratings):
         assert hasattr(self, 'model'), 'Please specify the exact model !'
