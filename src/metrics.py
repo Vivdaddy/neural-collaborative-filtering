@@ -32,6 +32,7 @@ class MetronAtK(object):
         test = pd.DataFrame({'user': test_users,
                              'test_item': test_items,
                              'test_score': test_scores})
+        print("Test is \n", test)
         # the full set
         full = pd.DataFrame({'user': neg_users + test_users,
                             'item': neg_items + test_items,
@@ -40,7 +41,7 @@ class MetronAtK(object):
         # rank the items according to the scores for each user
         full['rank'] = full.groupby('user')['score'].rank(method='first', ascending=False)
         full.sort_values(['user', 'rank'], inplace=True)
-        print("Full is ", full)
+        print("Full is \n", full)
         self._subjects = full
 
     def cal_hit_ratio(self):
