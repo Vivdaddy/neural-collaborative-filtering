@@ -32,6 +32,7 @@ class Engine(object):
             users, items, ratings = users.cuda(), items.cuda(), ratings.cuda()
         self.opt.zero_grad()
         ratings_pred = self.model(users, items)
+        print("Size in batch is ", ratings_pred.size())
         loss = self.crit(ratings_pred.view(-1), ratings)
         loss.backward()
         self.opt.step()
