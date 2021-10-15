@@ -79,6 +79,7 @@ class Engine(object):
                 negative_items = negative_items.cpu()
                 negative_scores = negative_scores.cpu()
             if self.classification is not False:
+                print("test scores before argmax ", test_scores)
                 test_scores = torch.argmax(test_scores, dim=1)
                 negative_scores = torch.argmax(negative_scores, dim=1)
                 print("test scores ", test_scores)
