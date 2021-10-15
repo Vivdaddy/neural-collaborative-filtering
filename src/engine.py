@@ -35,7 +35,7 @@ class Engine(object):
         ratings_pred = self.model(users, items)
         print("predicted Size in batch is ", ratings_pred.size())
         print("actual size of labels is ", ratings.size())
-        loss = self.crit(ratings_pred.view(-1), ratings)
+        loss = self.crit(ratings_pred, ratings)
         loss.backward()
         self.opt.step()
         loss = loss.item()
