@@ -33,6 +33,10 @@ class MetronAtK(object):
                              'test_item': test_items,
                              'test_score': test_scores})
         print("Test is \n", test)
+        # checking if some have non 0 scores
+        print("test subset is \n",test[test['test_score']> 0])
+        # checking if some have 3 score
+        print("test subset is \n",test[test['test_score']== 3])
         # the full set
         full = pd.DataFrame({'user': neg_users + test_users,
                             'item': neg_items + test_items,
