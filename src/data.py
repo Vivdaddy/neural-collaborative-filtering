@@ -112,7 +112,7 @@ class SampleGenerator(object):
             ratings = torch.nn.functional.one_hot(torch.as_tensor(ratings, dtype=torch.int64), num_classes=6)
         dataset = UserItemRatingDataset(user_tensor=torch.LongTensor(users),
                                         item_tensor=torch.LongTensor(items),
-                                        target_tensor=torch.LongTensor(ratings))
+                                        target_tensor=torch.FloatTensor(ratings))
         return DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     @property
