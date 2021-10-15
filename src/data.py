@@ -42,6 +42,7 @@ class SampleGenerator(object):
         self.ratings = ratings
         # explicit feedback using _normalize and implicit using _binarize
         # self.preprocess_ratings = self._normalize(ratings)
+        self.classification = classification
         if classification:
             self.preprocess_ratings = self._multirize(ratings)
         else:
@@ -107,6 +108,8 @@ class SampleGenerator(object):
                 users.append(int(row.userId))
                 items.append(int(row.negatives[i]))
                 ratings.append(float(0))  # negative samples get 0 rating
+        if self.classification is True:
+            ratings = torch.nn.functional.one_hot(ratings, num_classes=6)
         dataset = UserItemRatingDataset(user_tensor=torch.LongTensor(users),
                                         item_tensor=torch.LongTensor(items),
                                         target_tensor=torch.FloatTensor(ratings))

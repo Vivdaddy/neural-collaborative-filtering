@@ -21,6 +21,7 @@ class Engine(object):
         # explicit feedback
         # self.crit = torch.nn.MSELoss()
         # implicit feedback
+        self.classification  = self.config['classification']
         if self.config['classification'] is True:
             self.crit = torch.nn.CrossEntropyLoss()
         else:
@@ -65,8 +66,8 @@ class Engine(object):
                 test_items = test_items.cuda()
                 negative_users = negative_users.cuda()
                 negative_items = negative_items.cuda()
-            test_scores = self.model(test_users, test_items)
-            negative_scores = self.model(negative_users, negative_items)
+                test_scores = self.model(test_users, test_items)
+                negative_scores = self.model(negative_users, negative_items)
             if self.config['use_cuda'] is False:
                 test_users = test_users.cpu()
                 test_items = test_items.cpu()
@@ -74,6 +75,9 @@ class Engine(object):
                 negative_users = negative_users.cpu()
                 negative_items = negative_items.cpu()
                 negative_scores = negative_scores.cpu()
+            if self.classification is True:
+                test_scores = torch.argmax(test_scores, dim=1)
+                negative_scores = torch.argmax(negative_scores, dim=1)
             self._metron.subjects = [test_users.data.view(-1).tolist(),
                                  test_items.data.view(-1).tolist(),
                                  test_scores.data.view(-1).tolist(),
