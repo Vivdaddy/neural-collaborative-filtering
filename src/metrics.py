@@ -40,6 +40,7 @@ class MetronAtK(object):
         # rank the items according to the scores for each user
         full['rank'] = full.groupby('user')['score'].rank(method='first', ascending=False)
         full.sort_values(['user', 'rank'], inplace=True)
+        print("Full is ", full)
         self._subjects = full
 
     def cal_hit_ratio(self):
