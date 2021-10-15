@@ -23,6 +23,7 @@ class Engine(object):
         # implicit feedback
         self.classification  = self.config['classification']
         if self.config['classification'] is True:
+            print("classification engine")
             self.crit = torch.nn.CrossEntropyLoss()
         else:
             self.crit = torch.nn.BCELoss()
