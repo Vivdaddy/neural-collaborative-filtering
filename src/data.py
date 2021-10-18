@@ -130,5 +130,6 @@ class SampleGenerator(object):
             for i in range(len(row.negative_samples)):
                 negative_users.append(int(row.userId))
                 negative_items.append(int(row.negative_samples[i]))
+        print("Length Test Users:{:d} Length Test Items:{:d} \nLength Negative Users:{:d} Length Negative Items{:d}".format(len(test_users), len(test_items), len(negative_users), len(negative_items)))
         return [torch.LongTensor(test_users), torch.LongTensor(test_items), torch.LongTensor(negative_users),
                 torch.LongTensor(negative_items)]
