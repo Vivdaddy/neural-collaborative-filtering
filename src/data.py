@@ -98,8 +98,11 @@ class SampleGenerator(object):
     def instance_a_train_loader(self, num_negatives, batch_size):
         """instance train loader for one training epoch"""
         users, items, ratings = [], [], []
+        print("Train ratings before any negative sampling nonsense \n", self.train_ratings)
         train_ratings = pd.merge(self.train_ratings, self.negatives[['userId', 'negative_items']], on='userId')
+        print("train ratings after merging negative samples\n", train_ratings)
         train_ratings['negatives'] = train_ratings['negative_items'].apply(lambda x: random.sample(x, num_negatives))
+        print("train ratings after samplings negative samples\n", train_ratings)
         for row in train_ratings.itertuples():
             users.append(int(row.userId))
             items.append(int(row.itemId))
