@@ -51,6 +51,7 @@ class SampleGenerator(object):
         self.item_pool = set(self.ratings['itemId'].unique())
         # create negative item samples for NCF learning
         self.negatives = self._sample_negative(ratings)
+        print("self.negatives is \n", self.negatives)
         self.train_ratings, self.test_ratings = self._split_loo(self.preprocess_ratings)
 
     def _normalize(self, ratings):
@@ -92,7 +93,7 @@ class SampleGenerator(object):
         interact_status = ratings.groupby('userId')['itemId'].apply(set).reset_index().rename(
             columns={'itemId': 'interacted_items'})
         interact_status['negative_items'] = interact_status['interacted_items'].apply(lambda x: self.item_pool - x)
-        interact_status['negative_samples'] = interact_status['negative_items'].apply(lambda x: random.sample(x, 20))
+        interact_status['negative_samples'] = interact_status['negative_items'].apply(lambda x: random.sample(x, 3))
         return interact_status[['userId', 'negative_items', 'negative_samples']]
 
     def instance_a_train_loader(self, num_negatives, batch_size):
