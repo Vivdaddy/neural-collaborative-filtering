@@ -18,11 +18,12 @@ class Engine(object):
         self._writer = SummaryWriter(log_dir='runs/{}'.format(config['alias']))  # tensorboard writer
         self._writer.add_text('config', str(config), 0)
         self.opt = use_optimizer(self.model, config)
-        self.classification = config['classification']
+        self.classification = self.config['classification']
         # explicit feedback
         # self.crit = torch.nn.MSELoss()
         # implicit feedback
         if self.classification is False:
+            print("About to bceloss")
             self.crit = torch.nn.BCELoss()
         else:
             self.crit = torch.nn.CrossEntropyLoss()

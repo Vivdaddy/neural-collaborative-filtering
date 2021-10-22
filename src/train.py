@@ -21,7 +21,7 @@ gmf_config = {'alias': 'gmf_factor8neg4-implict',
               'num_items': 3706,
               'latent_dim': 8,
               'num_negative': 5,
-              'classification': True, 
+              'classification': False, 
               'num_classes': 6,
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
@@ -37,7 +37,7 @@ mlp_config = {'alias': 'mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001',
               'num_items': 3706,
               'latent_dim': 8,
               'num_negative': 5,
-              'classification': True, 
+              'classification': False, 
               'num_classes': 6,
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
