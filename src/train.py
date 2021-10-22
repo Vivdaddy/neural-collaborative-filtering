@@ -83,7 +83,7 @@ ml1m_rating = ml1m_rating[['userId', 'itemId', 'rating', 'timestamp']]
 print('Range of userId is [{}, {}]'.format(ml1m_rating.userId.min(), ml1m_rating.userId.max()))
 print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating.itemId.max()))
 # DataLoader for training
-sample_generator = SampleGenerator(ratings=ml1m_rating)
+sample_generator = SampleGenerator(ratings=ml1m_rating, classification=False)
 evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
 # config = gmf_config
