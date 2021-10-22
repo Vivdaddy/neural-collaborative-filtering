@@ -53,7 +53,7 @@ class Engine(object):
         for batch_id, batch in enumerate(train_loader):
             assert isinstance(batch[0], torch.LongTensor)
             user, item, rating = batch[0], batch[1], batch[2]
-            rating = rating.long()
+            # rating = rating.long()
             loss = self.train_single_batch(user, item, rating)
             if batch_id % 1000 == 0:
                 print('[Training Epoch {}] Batch {}, Loss {}'.format(epoch_id, batch_id, loss))
