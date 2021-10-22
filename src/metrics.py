@@ -46,6 +46,7 @@ class MetronAtK(object):
         full['rank'] = full.groupby('user')['score'].rank(method='first', ascending=False)
         full.sort_values(['user', 'rank'], inplace=True)
         print("Full is \n", full)
+        print("Full subset is \n", full[full['score']> 0])
         self._subjects = full
 
     def cal_hit_ratio(self):
